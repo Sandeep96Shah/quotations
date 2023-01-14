@@ -1,30 +1,30 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { createUser, signIn } from "../../action";
 import { Container, FormContainer, Header, FormBody, Fields } from "./styles";
 
 const Form = (props) => {
+  console.log('props', props);
+  const dispatch = props;
   const [isSignUp, setIsSighUp] = useState(true);
-//   const [name, setName] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [confirmPassword, setConfirmPassword] = useState("");
     const [data, setData] = useState({name: "", email: "", password: "", confirmPassword: ""});
   const handleForm = (val) => {
     if (val === isSignUp) {
+      if(val) {
+        createUser(data);
+      }else {
+        signIn(data);
+      }
         // cll the api
       console.log("call the api");
     } else {
       setIsSighUp(val);
       console.log("change the form");
     }
-    // setName("");
-    // setEmail("");
-    // setPassword("");
-    // setConfirmPassword("");
     setData({name: "", email: "", password: "", confirmPassword: ""});
   };
 
   const handleFormUpdate = (event) => {
-    console.log('event.target.name', event.target.name)
     const field = event.target.name;
     const value = event.target.value;
     let newData;
@@ -108,6 +108,7 @@ const Form = (props) => {
                 type="email"
                 placeholder="Email"
                 value={data.email}
+                name="email"
                 onChange={(e) => handleFormUpdate(e)}
               />
             </Fields>
@@ -117,6 +118,7 @@ const Form = (props) => {
                 type="password"
                 placeholder="Password"
                 value={data.password}
+                name="password"
                 onChange={(e) => handleFormUpdate(e)}
               />
             </Fields>
@@ -141,4 +143,9 @@ const Form = (props) => {
   );
 };
 
-export default Form;
+const mapstateToProps = (state) => {
+  console.log('state', state);
+  return {};
+}
+
+export default connect(mapstateToProps)(Form);
